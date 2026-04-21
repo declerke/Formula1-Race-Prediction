@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: f1_postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-f1_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-f1_password}
+      POSTGRES_DB: ${DB_NAME:-f1_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - f1_postgres_data:/var/lib/postgresql/data
+      - ./sql/schema_postgres.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-f1_user} -d ${DB_NAME:-f1_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  f1_postgres_data:

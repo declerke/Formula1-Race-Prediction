@@ -1,0 +1,38 @@
+api:
+  jolpica_base_url: "https://api.jolpi.ca/ergast/f1"
+  openf1_base_url: "https://api.openf1.org/v1"
+  jolpica_delay: 0.3      # seconds between requests (limit: 4 req/s)
+  openf1_delay: 0.5       # seconds between requests (limit: 3 req/s)
+
+seasons:
+  historical_start: 2021
+  historical_end: 2025
+  openf1_years: [2023, 2024, 2025]
+  fastf1_year: 2025
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "f1_db"
+  user: "f1_user"
+
+model:
+  targets:
+    - is_top3
+    - is_winner
+  train_seasons: [2021, 2022, 2023]
+  val_seasons: [2024]
+  test_seasons: [2025]
+  rolling_window: 5
+  track_window: 3
+  random_state: 42
+  xgb_n_estimators: 200
+  xgb_max_depth: 4
+  xgb_learning_rate: 0.05
+
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  fastf1_cache: "data/fastf1_cache"
+  artifacts: "artifacts"
+  metrics: "metrics"
